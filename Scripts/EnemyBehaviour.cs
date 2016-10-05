@@ -36,10 +36,12 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	void Update() {
 		Vector2 playerPos = GameObject.Find ("Player").transform.position;
-		shootTimeout += 0.01f;
+		shootTimeout += 0.05f;
 		if (shootTimeout >= maxShootTimeout && isShooting && playerVisible && !toDelete) {
 			GameObject projectile = Instantiate (bullet, transform.position, transform.rotation) as GameObject;
  
+			playerPos.x += Random.Range (-1f, 1f) + GameObject.Find("Player").GetComponent<Rigidbody2D>().velocity.x ;
+			playerPos.y += Random.Range (-1f, 1f) + GameObject.Find("Player").GetComponent<Rigidbody2D>().velocity.y;
 
 			projectile.GetComponent<Rigidbody2D> ().AddForce ((  playerPos - new Vector2(projectile.transform.position.x, projectile.transform.position.y)).normalized * 500);
 			projectile.GetComponent<BlinkysBallScript> ().shot = true;

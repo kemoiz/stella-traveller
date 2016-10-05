@@ -28,7 +28,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	void FixedUpdate() {
 
 		if (!isMobile)
-			isShooting = Input.GetKey (KeyCode.Space);
+			isShooting = Input.GetMouseButton (0);
 		
 		
 

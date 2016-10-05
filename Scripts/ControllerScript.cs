@@ -46,18 +46,22 @@ public class ControllerScript : MonoBehaviour {
 		transform.rotation = Quaternion.Euler(0, 0, angle);
 		Vector2 controls = new Vector2 (0, 0);
 
-		if (Input.GetKey (KeyCode.W)) {
+		if (Input.GetKey (KeyCode.T)) {
 			controls.y += 1;
 		}
-		if (Input.GetKey (KeyCode.S)) {
+		if (Input.GetKey (KeyCode.G)) {
 			controls.y -= 1;
 		}
-		if (Input.GetKey (KeyCode.A)) {
+		if (Input.GetKey (KeyCode.F)) {
 			controls.x -= 1;
 		}
-		if (Input.GetKey (KeyCode.D)) {
+		if (Input.GetKey (KeyCode.H)) {
 			controls.x += 1;
 		}
+
+		controls.x = Input.GetAxis ("Horizontal"); 
+		controls.y = Input.GetAxis ("Vertical");
+
 
 		GetComponent<Rigidbody2D> ().AddForce (controls.normalized * speed * 60 * Time.deltaTime);
 
@@ -100,9 +104,9 @@ public class ControllerScript : MonoBehaviour {
 				gameObject.GetComponent<Rigidbody2D> ().rotation = desiredRotation;
 			}
 
-				gameObject.GetComponent<Rigidbody2D> ().rotation = Mathf.SmoothStep (gameObject.GetComponent<Rigidbody2D> ().rotation, desiredRotation, 0.2f);
+			//	gameObject.GetComponent<Rigidbody2D> ().rotation = Mathf.SmoothStep (gameObject.GetComponent<Rigidbody2D> ().rotation, desiredRotation, 0.2f);
 	
-			gameObject.GetComponent<Rigidbody2D> ().AddRelativeForce (new Vector2 (0, Mathf.Max (Mathf.Abs(joyX), Mathf.Abs(joyY))) * 60 * Time.deltaTime * speed);
+		//	gameObject.GetComponent<Rigidbody2D> ().AddRelativeForce (new Vector2 (0, Mathf.Max (Mathf.Abs(joyX), Mathf.Abs(joyY))) * 60 * Time.deltaTime * speed);
 		
 
 			//gameObject.GetComponent<Rigidbody2D> ().AddForceAtPosition (transform.right * -verticalSpeed * CnInputManager.GetAxis("Horizontal"), worldForcePosition);
