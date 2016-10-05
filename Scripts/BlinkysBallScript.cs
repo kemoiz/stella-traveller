@@ -34,7 +34,11 @@ public class BlinkysBallScript : MonoBehaviour {
 		if (health <= 0)
 			Destroy (this.gameObject);
 
+		if (lifetime >= 4.90) {
 
+			//health = (int) (4 - (lifetime - 4.90)) * 40;
+
+		}
 		switch (health) {
 		case 3:
 			GetComponent<SpriteRenderer> ().sprite = d1;

@@ -82,7 +82,7 @@ public class StarGenerator : MonoBehaviour {
 
 	//	if (halvedFramerate && Time.frameCount % 2 == 0)
 	//		return;
-		
+		float _nt = GameObject.Find("Player").GetComponent<PlayerBehaviour>()._nt / 5f;
 
 		for (int i = 0; i < starCount; i++) {
 			//stars [i] = new Star ();
@@ -95,7 +95,7 @@ public class StarGenerator : MonoBehaviour {
 			stars [i].y =((y * 10) % 20);
  
 
-			stars [i].star.transform.localPosition = new Vector2 (- stars [i].x, 20-stars [i].y);
+			stars [i].star.transform.localPosition = new Vector2 (- stars [i].x * 3  , 20-stars [i].y * 3  );
 
 
 		}

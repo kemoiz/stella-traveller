@@ -20,8 +20,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	public bool docked = false;
 	bool isShooting = false, cannotShoot = false;
 	bool isMobile = Application.isMobilePlatform;
-
-	public int score = 0;
+	public float _nt = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -78,7 +77,10 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	void Update () {
 	    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 1), 0.1f);
-		float emissionRate = this.GetComponent<Rigidbody2D> ().velocity.magnitude * 5;
+		_nt = 1.3f + (Camera.main.orthographicSize - 9) * 0.2f;
+		GameObject.Find ("background").transform.localScale = new Vector3 (_nt, _nt, _nt);
+
+		float emissionRate = this.GetComponent<Rigidbody2D> ().velocity.magnitude * 2;
 		if (emissionRate < 5)
 			emissionRate = 0;
 		SetEmissionRate (this.GetComponentInChildren<ParticleSystem> (), emissionRate);
