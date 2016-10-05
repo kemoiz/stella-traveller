@@ -10,13 +10,18 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	public float shootTimeout = 1;
 	float maxShootTimeout = 0.6f;
+
+	public float gotShotCounter = -1;
+
 	//public Transform bullet;
 	public GameObject bullet2;
 	public Transform leftBulletHelper, rightBulletHelper;
 
 	public bool docked = false;
-	bool isShooting = false;
+	bool isShooting = false, cannotShoot = false;
 	bool isMobile = Application.isMobilePlatform;
+
+	public int score = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +31,24 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate() {
+		gotShotCounter -= 0.01f;
+		if (gotShotCounter > 0) {
+			cannotShoot = true;
+			int x = 0;
+			if (gotShotCounter * 100 % 10 >= 5) { 
+				x = 1;
+			}
+			GetComponent<SpriteRenderer> ().color = new Color (0.5f, 0.5f, 0.5f, x);
+			Physics2D.IgnoreLayerCollision (LayerMask.NameToLayer ("Projectile"), LayerMask.NameToLayer ("Player"), true);
+
+
+
+		} else {
+			cannotShoot = false;
+			GetComponent<SpriteRenderer> ().color = new Color (1,1,1,1);
+			Physics2D.IgnoreLayerCollision (LayerMask.NameToLayer ("Projectile"), LayerMask.NameToLayer ("Player"), false);
+
+		}
 
 		if (!isMobile)
 			isShooting = Input.GetMouseButton (0);
@@ -33,7 +56,7 @@ public class PlayerBehaviour : MonoBehaviour {
 		
 
 		shootTimeout += 0.05f;
-		if (shootTimeout >= maxShootTimeout && isShooting) {
+		if (shootTimeout >= maxShootTimeout && isShooting && !cannotShoot) {
 			GameObject leftProjectile = Instantiate (bullet2, leftBulletHelper.transform.position, leftBulletHelper.transform.rotation) as GameObject;
 			GameObject rightProjectile = Instantiate (bullet2, rightBulletHelper.transform.position, rightBulletHelper.transform.rotation) as GameObject;
 
@@ -54,7 +77,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	void Update () {
-	    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 3), 0.1f);
+	    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 1), 0.1f);
 		float emissionRate = this.GetComponent<Rigidbody2D> ().velocity.magnitude * 5;
 		if (emissionRate < 5)
 			emissionRate = 0;
@@ -90,13 +113,29 @@ public class PlayerBehaviour : MonoBehaviour {
 		if (coll.gameObject.tag == "Dock" && fuel < 100000)
 			docked = true;
 		if (coll.gameObject.tag == "Projectile") {
-			fuel -= 5000;
-
+			Shot ();
 		}
+		if (coll.gameObject.tag == "Enemy") {
+				fuel -= 1000;
+			}
+
+
+	 
 
 	}
 	void OnCollisionExit2D(Collision2D coll) {
 		docked = false;
+	}
+
+	public void Shot() {
+		if (gotShotCounter > 0)
+			return;
+		
+		fuel -= 8000;
+		GameObject.Find ("SFXContainer").GetComponent<SFXContainer> ().playSound (0);
+		gotShotCounter = 1;
+
+
 	}
 
 	public void Refuel() {

@@ -5,6 +5,8 @@ using UnityStandardAssets.ImageEffects;
 using UnityStandardAssets.Utility;
 using UnityStandardAssets._2D;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class GameState : MonoBehaviour {
 
@@ -13,6 +15,7 @@ public class GameState : MonoBehaviour {
 	public GameObject currentDialogueTarget;
 
 	float splashTime = 1f;
+	public static int score = 0;
 
 	public Texture2D dialogueOverlay, refuelingOverlay;
 	// Use this for initialization
@@ -66,5 +69,40 @@ public class GameState : MonoBehaviour {
 		if (!inDialogue && isAlive)
 			isControlable = true;
 
+		if (GameObject.Find ("Player").GetComponent<PlayerBehaviour> ().fuel <= 0) {
+			Scene scene = SceneManager.GetActiveScene ();
+			SceneManager.LoadScene (scene.name);
+
+			//StartCoroutine(LoadGameRoutine ());
+		}
+
+	}
+
+
+	private IEnumerator LoadGameRoutine()
+	{
+
+		AsyncOperation ao = SceneManager.LoadSceneAsync("hiscore");
+		ao.allowSceneActivation = false;
+
+		while (!ao.isDone)
+		{
+			float progress = Mathf.Clamp01(ao.progress / 0.9f);
+
+
+
+			// Progress ends at exactly 0.9
+			//   Progress of 1.0 is reserved for scene activation
+			if (ao.progress == 0.9f)
+			{
+				Debug.Log("Loading complete");
+			 
+				ao.allowSceneActivation = true;
+			}
+
+			yield return null;
+		}
+
+ 
 	}
 }

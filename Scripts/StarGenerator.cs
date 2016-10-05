@@ -17,6 +17,10 @@ public class StarGenerator : MonoBehaviour {
     Star[] stars;
 	// Use this for initialization
 	void Start () {
+
+		if (Application.isMobilePlatform)
+			Destroy (gameObject);
+		
 		GenerateStars (starCount);
 	}
 

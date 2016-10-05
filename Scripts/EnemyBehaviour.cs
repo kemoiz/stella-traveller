@@ -37,13 +37,15 @@ public class EnemyBehaviour : MonoBehaviour {
 	void Update() {
 		Vector2 playerPos = GameObject.Find ("Player").transform.position;
 		shootTimeout += 0.05f;
+		maxShootTimeout = Mathf.Sin (Time.frameCount / 10f) + 1;
+
 		if (shootTimeout >= maxShootTimeout && isShooting && playerVisible && !toDelete) {
 			GameObject projectile = Instantiate (bullet, transform.position, transform.rotation) as GameObject;
  
-			playerPos.x += Random.Range (-1f, 1f) + GameObject.Find("Player").GetComponent<Rigidbody2D>().velocity.x ;
+			playerPos.x += Random.Range (-1f, 1f) + GameObject.Find("Player").GetComponent<Rigidbody2D>().velocity.x;
 			playerPos.y += Random.Range (-1f, 1f) + GameObject.Find("Player").GetComponent<Rigidbody2D>().velocity.y;
 
-			projectile.GetComponent<Rigidbody2D> ().AddForce ((  playerPos - new Vector2(projectile.transform.position.x, projectile.transform.position.y)).normalized * 500);
+			projectile.GetComponent<Rigidbody2D> ().AddForce ((  playerPos - new Vector2(projectile.transform.position.x, projectile.transform.position.y)).normalized * 5000);
 			projectile.GetComponent<BlinkysBallScript> ().shot = true;
 			Physics2D.IgnoreCollision (projectile.GetComponent<Collider2D> (), GetComponent<Collider2D> ());
 
@@ -98,7 +100,8 @@ public class EnemyBehaviour : MonoBehaviour {
 			blinky.transform.position = enemySpawn;
 			blinky.GetComponent<EnemyBehaviour> ().health = 100;
 			toDelete = true;
- 
+			GameState.score += 1;
+
 
 			GetComponent<AudioSource> ().Play ();
 			deleteTimeout = 2;
@@ -220,9 +223,9 @@ public class EnemyBehaviour : MonoBehaviour {
 		
 		//transform.position = pos;
 		if (_shotCounter > 0) {
-			GetComponent<Rigidbody2D> ().AddForce (desiredMomentum * 13f); // blinky gets angry then
+			GetComponent<Rigidbody2D> ().AddForce (desiredMomentum * 13f * speed); // blinky gets angry then
 		} else {
-			GetComponent<Rigidbody2D> ().AddForce (desiredMomentum * 3.5f);
+			GetComponent<Rigidbody2D> ().AddForce (desiredMomentum * 3.5f * speed);
 		}
 
 
