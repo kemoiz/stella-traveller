@@ -8,7 +8,7 @@ public class ControllerScript : MonoBehaviour {
 	public Vector2 sideEnginePosition = new Vector2 (0, -1);
 	static bool isClicked = false;
 
-
+	bool useAlternateControls = true;
 
 	// Use this for initialization
 	void Start () {
@@ -17,21 +17,15 @@ public class ControllerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 
-	 
+	void OriginalControls() {
+		Vector2 worldForcePosition = transform.TransformPoint (sideEnginePosition);
 
-	void FixedUpdate () {
-
-		if (Input.GetKeyDown (KeyCode.L) || Input.touchCount > 1) {
-		//	gameObject.GetComponent<PlayerBehaviour> ().Shoot ();
-		}
-
-	
 		if (Input.GetKey (KeyCode.Space) || isClicked) {
 
 			gameObject.GetComponent<Rigidbody2D> ().AddRelativeForce (new Vector2 (0, speed * 60 * Time.deltaTime));
 
 		}
-		Vector2 worldForcePosition = transform.TransformPoint (sideEnginePosition);
+
 		if (Input.GetKey (KeyCode.A)) {
 			gameObject.GetComponent<Rigidbody2D> ().AddForceAtPosition (transform.right * -verticalSpeed, worldForcePosition);
 
@@ -40,10 +34,46 @@ public class ControllerScript : MonoBehaviour {
 			gameObject.GetComponent<Rigidbody2D> ().AddForceAtPosition (transform.right * verticalSpeed, worldForcePosition);
 
 		}
-		float joyX = CnInputManager.GetAxis ("Horizontal");
-		float joyY = CnInputManager.GetAxis ("Vertical");
-	
-		;
+	}
+
+	void AlternateControls() {
+		Vector2 worldForcePosition = transform.TransformPoint (sideEnginePosition);
+
+		var mouse = Input.mousePosition;
+		var screenPoint = Camera.main.WorldToScreenPoint(transform.localPosition);
+		var offset = new Vector2(mouse.x - screenPoint.x, mouse.y - screenPoint.y);
+		var angle = Mathf.Atan2(offset.y, offset.x) * Mathf.Rad2Deg - 90;
+		transform.rotation = Quaternion.Euler(0, 0, angle);
+		Vector2 controls = new Vector2 (0, 0);
+
+		if (Input.GetKey (KeyCode.W)) {
+			controls.y += 1;
+		}
+		if (Input.GetKey (KeyCode.S)) {
+			controls.y -= 1;
+		}
+		if (Input.GetKey (KeyCode.A)) {
+			controls.x -= 1;
+		}
+		if (Input.GetKey (KeyCode.D)) {
+			controls.x += 1;
+		}
+
+		GetComponent<Rigidbody2D> ().AddForce (controls.normalized * speed * 60 * Time.deltaTime);
+
+	}
+
+	void FixedUpdate () {
+
+
+		if (useAlternateControls)
+			AlternateControls ();
+		else
+			OriginalControls ();
+		
+	    float joyX = CnInputManager.GetAxis ("Horizontal");
+	 	float joyY = CnInputManager.GetAxis ("Vertical");
+	 
 		if (Mathf.Abs (Mathf.Rad2Deg * (Mathf.Sin (joyX / joyY))) > 0.01f && GameObject.Find("GameState").GetComponent<GameState>().isControlable) {
 
 			float desiredRotation = Mathf.Atan2 (-joyY, -joyX) * Mathf.Rad2Deg - 90;

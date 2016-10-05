@@ -28,7 +28,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	void FixedUpdate() {
 
 		if (!isMobile)
-			isShooting = Input.GetKey (KeyCode.L);
+			isShooting = Input.GetKey (KeyCode.Space);
 		
 		
 
@@ -54,15 +54,13 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	void Update () {
-		//Camera.current.orthographicSize = Mathf.Lerp(Camera.current.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 3), 0.1f);
+	    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 3), 0.1f);
 		float emissionRate = this.GetComponent<Rigidbody2D> ().velocity.magnitude * 5;
 		if (emissionRate < 5)
 			emissionRate = 0;
 		SetEmissionRate (this.GetComponentInChildren<ParticleSystem> (), emissionRate);
 	
 
-
-		Debug.Log ("velocity: " + GetComponent<Rigidbody2D> ().velocity.magnitude);
 
 		fuel -= (int) this.GetComponent<Rigidbody2D> ().velocity.magnitude * fuelUsage;
 		GameObject.Find ("Slider").GetComponent<Slider> ().value = fuel;
@@ -103,7 +101,6 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	public void Refuel() {
 		
- 
 			fuel += chargingSpeed;
 
 		if (fuel > 100000)
