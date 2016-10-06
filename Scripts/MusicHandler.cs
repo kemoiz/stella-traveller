@@ -13,11 +13,11 @@ public class MusicHandler : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		float velocity = GameObject.Find ("Player").GetComponent<Rigidbody2D> ().velocity.magnitude * 400;
+		float velocity = GameObject.Find ("Player").GetComponent<Rigidbody2D> ().velocity.magnitude * 1000;
 
 
 
-		gameObject.GetComponent<AudioLowPassFilter>().cutoffFrequency = Mathf.Lerp(velocity, gameObject.GetComponent<AudioLowPassFilter>().cutoffFrequency, 0.65f) + 150;
+		gameObject.GetComponent<AudioLowPassFilter>().cutoffFrequency = Mathf.Lerp(velocity, gameObject.GetComponent<AudioLowPassFilter>().cutoffFrequency, 0.9f) + 150;
 	}
 
 	float Ceil(float value) {

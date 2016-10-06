@@ -77,6 +77,11 @@ public class ControllerScript : MonoBehaviour {
 		
 	    float joyX = CnInputManager.GetAxis ("Horizontal");
 	 	float joyY = CnInputManager.GetAxis ("Vertical");
+
+
+		if (!Application.isMobilePlatform)
+			return;
+		
 	 
 		if (Mathf.Abs (Mathf.Rad2Deg * (Mathf.Sin (joyX / joyY))) > 0.01f && GameObject.Find("GameState").GetComponent<GameState>().isControlable) {
 

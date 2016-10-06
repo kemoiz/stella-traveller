@@ -80,7 +80,7 @@ public class PlayerBehaviour : MonoBehaviour {
 		_nt = 1.3f + (Camera.main.orthographicSize - 9) * 0.2f;
 		GameObject.Find ("background").transform.localScale = new Vector3 (_nt, _nt, _nt);
 
-		float emissionRate = this.GetComponent<Rigidbody2D> ().velocity.magnitude * 2;
+		float emissionRate = this.GetComponent<Rigidbody2D> ().velocity.magnitude * 3;
 		if (emissionRate < 5)
 			emissionRate = 0;
 		SetEmissionRate (this.GetComponentInChildren<ParticleSystem> (), emissionRate);

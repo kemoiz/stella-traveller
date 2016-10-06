@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour {
 
 
-	public static float raycastDistance = 30;
+	public static float raycastDistance = 45;
 
 	public bool playerVisible = false, isShooting = false, toDelete = false;
 
