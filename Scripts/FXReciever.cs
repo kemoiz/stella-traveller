@@ -12,6 +12,12 @@ public class FXReciever : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+
+
+		if (!Application.isMobilePlatform)
+			return;
+		
 		if (gameObject.GetComponent<ScreenOverlay> ().intensity < 0.2f) {
 			gameObject.GetComponent<ScreenOverlay> ().intensity = 0;
 			GameObject.Find ("RefuelingText").GetComponent<Text> ().color = new Color (1, 1, 1, 0);

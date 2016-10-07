@@ -76,7 +76,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	void Update () {
-	    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 1), 0.1f);
+	    Camera.main.orthographicSize = Mathf.Lerp(Camera.main.orthographicSize, 9 + (GetComponent<Rigidbody2D> ().velocity.magnitude / 2), 0.1f);
 		_nt = 1.3f + (Camera.main.orthographicSize - 9) * 0.2f;
 		GameObject.Find ("background").transform.localScale = new Vector3 (_nt, _nt, _nt);
 

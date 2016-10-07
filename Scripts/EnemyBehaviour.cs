@@ -7,6 +7,8 @@ public class EnemyBehaviour : MonoBehaviour {
 
 	public static float raycastDistance = 45;
 
+	public bool respawn = false;
+
 	public bool playerVisible = false, isShooting = false, toDelete = false;
 
 	public float shootTimeout = 1, deleteTimeout = -1;
@@ -62,7 +64,15 @@ public class EnemyBehaviour : MonoBehaviour {
 		} else {
 			GetComponent<SpriteRenderer> ().color = Color.white;
 		}
-		healthBar.transform.localScale = new Vector2 (health / 100f, 1);
+		if (health != 100) {
+			transform.FindChild ("health_bar").gameObject.SetActive (true);
+			healthBar.transform.localScale = new Vector2 (health / 100f, 1);
+
+		}
+		else
+			transform.FindChild ("health_bar").gameObject.SetActive (false);
+		
+		
 
 		if (toDelete) {
 			health = 0;
@@ -77,28 +87,29 @@ public class EnemyBehaviour : MonoBehaviour {
 
 
 		if (health <= 0 && !toDelete) {
-			GameObject blinky = Instantiate (this.gameObject, this.transform.position, this.transform.rotation) as GameObject;
-			Vector2 enemySpawn = new Vector2 (0, 0);
-			do {
-				float randx = Random.Range(15, 40), randy = Random.Range(15, 40);
 
-				if (Random.value > 0.75f) {
-					enemySpawn = new Vector2(playerPos.x + randx, playerPos.y + randy);
-				} else if (Random.value > 0.5f) {
-					enemySpawn = new Vector2(playerPos.x - randx, playerPos.y + randy);
-				}
-				else if (Random.value > 0.25f) {
-					enemySpawn = new Vector2(playerPos.x + randx, playerPos.y - randy);
-				}
-				else  {
-					enemySpawn = new Vector2(playerPos.x - randx, playerPos.y - randy);
-				}
+			if (respawn) {
+				GameObject blinky = Instantiate (this.gameObject, this.transform.position, this.transform.rotation) as GameObject;
+				Vector2 enemySpawn = new Vector2 (0, 0);
+				do {
+					float randx = Random.Range (15, 40), randy = Random.Range (15, 40);
+
+					if (Random.value > 0.75f) {
+						enemySpawn = new Vector2 (playerPos.x + randx, playerPos.y + randy);
+					} else if (Random.value > 0.5f) {
+						enemySpawn = new Vector2 (playerPos.x - randx, playerPos.y + randy);
+					} else if (Random.value > 0.25f) {
+						enemySpawn = new Vector2 (playerPos.x + randx, playerPos.y - randy);
+					} else {
+						enemySpawn = new Vector2 (playerPos.x - randx, playerPos.y - randy);
+					}
 
 
-			} while (Physics2D.OverlapPoint (enemySpawn));
+				} while (Physics2D.OverlapPoint (enemySpawn));
 
-			blinky.transform.position = enemySpawn;
-			blinky.GetComponent<EnemyBehaviour> ().health = 100;
+				blinky.transform.position = enemySpawn;
+				blinky.GetComponent<EnemyBehaviour> ().health = 100;
+			}
 			toDelete = true;
 			GameState.score += 1;
 

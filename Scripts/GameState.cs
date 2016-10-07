@@ -26,6 +26,12 @@ public class GameState : MonoBehaviour {
 		isControlable = true;
 		GameObject.Find ("SplashScreen").SetActive (true);
 
+		if (!Application.isMobilePlatform) {
+			GameObject.Find ("ShotButton").SetActive (false);
+			GameObject.Find ("ShotButton_ovl").SetActive (false);
+			GameObject.Find ("Joystick").SetActive (false);
+		}
+
 		
 	}
 	
