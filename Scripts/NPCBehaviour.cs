@@ -11,7 +11,7 @@ public class NPCBehaviour : MonoBehaviour {
 	Vector2 initialPos;
 	float intensityCounter = 0;
 	bool threwDialogue = false;
-	string tutorialString1 = "Hi there!\nUse docks to refuel ship and watch out for Blinkies. \n Have fun and don't get pissed by bugs!";
+	string tutorialString1 = "Well, nobody said I'm going to be honest";
 
 	public GameObject dialogueText;
 

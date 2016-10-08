@@ -31,6 +31,10 @@ public class BulletBehaviour : MonoBehaviour {
 
 		}
 
+		if (coll.gameObject.CompareTag ("Blocks")) {
+			Destroy (coll.gameObject);
+
+		}
 		Destroy (this.gameObject);
 
 	}
